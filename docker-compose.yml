@@ -9,11 +9,11 @@ services:
       - ./challenge:/root/challenge
     command: >
       bash -c "cargo build --release && cargo run --release"
-    deploy:
-      resources:
-        limits:
-          cpus: '40'
-          memory: 16G
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: '40'
+          #memory: 16G
 
   # Run the challenge in a nightly Rust environment
   nightly:
@@ -23,11 +23,11 @@ services:
       - ./challenge:/root/challenge
     command: >
       bash -c "cargo +nightly build --release && cargo run --release"
-    deploy:
-      resources:
-        limits:
-          cpus: '40'
-          memory: 16G
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: '40'
+          #memory: 16G
 
   # Development shell service for interactive development
   # If you dont have a local Rust toolchain installed, 
@@ -43,8 +43,8 @@ services:
     tty: true
     environment:
       - RUST_BACKTRACE=1
-    deploy:
-      resources:
-        limits:
-          cpus: '40'
-          memory: 16G
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: '40'
+          #memory: 16G

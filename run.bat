@@ -1,0 +1,1 @@
+docker exec -it sustcsc-rs-dev-1 bash
