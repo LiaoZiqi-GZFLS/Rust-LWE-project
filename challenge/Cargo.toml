@@ -4,8 +4,13 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-rand = "0.9.1"
-tfhe = { version = "1.2.0", features = ["boolean", "integer"] }
+rand = { version = "0.9", features = ["std"] }
+tfhe = { version = "1.2", features = ["boolean", "integer"] }
+rayon = "1.10.0"  # 使用最新版本并移除特性声明
+num_cpus = "1.16"
+
+[workspace]
+resolver = "2"
 
 [profile.release]
-opt-level = 1
+opt-level = 3
