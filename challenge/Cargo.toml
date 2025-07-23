@@ -1,3 +1,5 @@
+# cargo-features = ["profile-rustflags"]
+
 [package]
 name = "sustcsc-rs"
 version = "0.1.0"
@@ -6,7 +8,7 @@ edition = "2024"
 [dependencies]
 rand = { version = "0.9", features = ["std"] }
 tfhe = { version = "1.2", features = ["boolean", "integer"] }
-rayon = "1.10.0"  # 使用最新版本并移除特性声明
+rayon = "1.5"
 num_cpus = "1.16"
 
 [workspace]
@@ -14,3 +16,7 @@ resolver = "2"
 
 [profile.release]
 opt-level = 3
+codegen-units = 1
+lto = true
+panic = 'abort'
+# rustflags = ["-C", "target-cpu=native"]
