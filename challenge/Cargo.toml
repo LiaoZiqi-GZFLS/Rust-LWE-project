@@ -7,9 +7,9 @@ edition = "2024"
 
 [dependencies]
 rand = { version = "0.9", features = ["std"] }
-tfhe = { version = "1.2", features = ["boolean", "integer"] }
-rayon = "1.5"
-num_cpus = "1.16"
+tfhe = { version = "1.3", features = ["boolean", "integer"] }
+rayon = "1.10"
+num_cpus = "1.17"
 
 [workspace]
 resolver = "2"

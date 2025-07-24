@@ -1,7 +1,7 @@
 use rand::Rng;
 use tfhe::prelude::*;
 use tfhe::{ClientKey, ConfigBuilder, FheUint8, ServerKey};
-use tfhe::shortint::parameters::current_params::V1_3_PARAM_MULTI_BIT_GROUP_3_MESSAGE_2_CARRY_2_KS_PBS_GAUSSIAN_2M64;
+//use tfhe::shortint::parameters::current_params::V1_3_PARAM_MULTI_BIT_GROUP_3_MESSAGE_2_CARRY_2_KS_PBS_GAUSSIAN_2M64;
 
 pub(crate) type EncryptedGrid = Vec<Vec<FheUint8>>;
 
@@ -14,8 +14,8 @@ pub(crate) struct Client {
 impl Client {
     // Create a new client with a grid of size m * n
     pub(crate) fn new(m: u32, n: u32) -> Self {
-        let config = ConfigBuilder::default().use_custom_parameters(V1_3_PARAM_MULTI_BIT_GROUP_3_MESSAGE_2_CARRY_2_KS_PBS_GAUSSIAN_2M64).build();
-        //let config = ConfigBuilder::default().build();
+        //let config = ConfigBuilder::default().use_custom_parameters(V1_3_PARAM_MULTI_BIT_GROUP_3_MESSAGE_2_CARRY_2_KS_PBS_GAUSSIAN_2M64).build();
+        let config = ConfigBuilder::default().build();
         let client_key = ClientKey::generate(config);
         let server_key = ServerKey::new(&client_key);
 
