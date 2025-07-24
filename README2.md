@@ -4,4 +4,6 @@
 
 平时测试指令：`docker compose up stable`
 
+完整运行指令：`bash -c "cargo build --release && cargo run --release"`
+
 不过我们没有改什么cargo的版本与依赖，正常来说在linux中也可以直接运行。
