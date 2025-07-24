@@ -1,2 +1,9 @@
 [build]
-rustflags = ['-C', 'target-cpu=native']
+# rustflags = ['-C', 'target-cpu=native']
+rustflags = [
+  "-C", "target-cpu=native",      # 启用本地CPU所有特性（如AVX2/AVX-512）
+  "-C", "opt-level=3",            # 最高级别优化
+  "-C", "lto=fat",                # 全程序链接优化
+  "-C", "codegen-units=1",        # 单代码单元，提升跨模块优化
+  "-C", "panic=abort",            # 移除panic展开，减体积提性能
+]

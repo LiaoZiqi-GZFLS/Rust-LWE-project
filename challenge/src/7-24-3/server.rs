@@ -77,7 +77,7 @@ impl Server {
                 let nx = x.wrapping_add(*dx as usize);
                 let ny = y.wrapping_add(*dy as usize);
                 if nx < grid.len() && ny < grid[nx].len() {
-                    count = count + &grid[nx][ny];
+                    count += grid[nx][ny].clone();
                 }
             }
         }
