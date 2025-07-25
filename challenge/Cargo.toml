@@ -13,6 +13,9 @@ num_cpus = "1.17"
 
 [workspace]
 resolver = "2"
+members = [
+    "bonus/challenge",   # 或者 "bonus/*" 通配
+]
 
 [profile.release]
 opt-level = 3
