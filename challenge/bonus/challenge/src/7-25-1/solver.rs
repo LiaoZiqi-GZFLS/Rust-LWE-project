@@ -65,12 +65,11 @@ pub(crate) fn solve_lwe(
 fn babai_nearest_vector(B: &Array2<f64>, t: &Array1<f64>) -> Array1<f64> {
     let B = lll::Lattice::from_array2(B);
     let G = lll::gram_schmidt(&B.basis);
-    let B = lll::lll(&B).unwrap();
+    let B = lll::int_lll(&B).unwrap();
     let mut b = t.to_vec();
 
     // 这里由于迭代有依赖关系，不能完全并行化，但可以并行计算点积等操作
     for i in (0..B.basis.len()).rev() {
-
         let b_i = &B.basis[i];
         let g_i = &G[i];
         // 并行计算点积
