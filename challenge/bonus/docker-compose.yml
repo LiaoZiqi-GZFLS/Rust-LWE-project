@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Run the challenge in a stable Rust environment
+  stable:
+    image: rust:1.87.0-bookworm
+    working_dir: /root/challenge
+    volumes:
+      - ./challenge:/root/challenge
+    command: >
+      bash -c "cargo build --release && cargo run --release"
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: '40'
+          #memory: 16G
+
+  # Run the challenge in a nightly Rust environment
+  nightly:
+    image: rustlang/rust:nightly
+    working_dir: /root/challenge
+    volumes:
+      - ./challenge:/root/challenge
+    command: >
+      bash -c "cargo +nightly build --release && cargo run --release"
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: '40'
+          #memory: 16G
+
+  # Development shell service for interactive development
+  # If you dont have a local Rust toolchain installed, 
+  # you can use this service to develop the challenge.
+  # Make sure you know how to edit files in a container.
+  dev:
+    image: rust:1.87.0-bookworm
+    working_dir: /root/challenge
+    volumes:
+      - ./challenge:/root/challenge
+    command: bash
+    stdin_open: true
+    tty: true
+    environment:
+      - RUST_BACKTRACE=1
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: '40'
+          #memory: 16G
