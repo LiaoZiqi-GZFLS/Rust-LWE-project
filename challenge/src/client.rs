@@ -14,7 +14,7 @@ pub(crate) struct Client {
 impl Client {
     // Create a new client with a grid of size m * n
     pub(crate) fn new(m: u32, n: u32) -> Self {
-        let config = if m < 3 && n < 3 {
+        let config = if m < 10 && n < 10 {
             ConfigBuilder::default().use_custom_parameters(V1_3_PARAM_MULTI_BIT_GROUP_3_MESSAGE_2_CARRY_2_KS_PBS_GAUSSIAN_2M64).build()
         } else {
             ConfigBuilder::default().build()
