@@ -2,3 +2,6 @@
 	path = challenge/bonus/challenge/third_party/fplll
 	url = https://github.com/LiaoZiqi-GZFLS/fplll-generated
 	#url = https://github.com/fplll/fplll.git
+[submodule "challenge/bonus/challenge/third_party/g6k"]
+	path = challenge/bonus/challenge/third_party/g6k
+	url = https://github.com/LiaoZiqi-GZFLS/g6k-generated.git

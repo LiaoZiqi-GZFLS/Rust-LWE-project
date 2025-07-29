@@ -55,15 +55,6 @@ fn main() {
 }
 
 fn validate_solution(s_true: &Array1<u64>, s_pred: &Array1<u64>, q: u64) -> bool {
-    // 对 q 取模后的字符串表示
-    let s_true_mod = s_true.mapv(|x| x % q);
-    let s_pred_mod = s_pred.mapv(|x| x % q);
-
-    // 工整输出
-    println!("{:<12} : {:?}", "s_true % q", s_true_mod);
-    println!("{:<12} : {:?}", "s_pred % q", s_pred_mod);
-    println!("{:<12} : {}", "q", q);
-
     if s_true.len() != s_pred.len() {
         panic!("s_true and s_pred must have the same length");
     }

@@ -551,6 +551,7 @@ dependencies = [
  "ndarray-rand",
  "num",
  "num-bigint",
+ "num-rational",
  "num-traits",
  "rand 0.9.2",
  "rayon",
