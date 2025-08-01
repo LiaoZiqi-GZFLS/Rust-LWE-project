@@ -31,11 +31,16 @@ fn main() {
         let duration = start.elapsed();
         let error_norm = compute_error_norm(&instance.s, Array1::zeros(n), q);
 
+        //println!("{:<12} : {:?}", "s_true % q", &instance.s);
         let pass = if s_pred.len() == n {
             validate_solution(&instance.s, &s_pred, q)
         } else {
             validate_solution(&instance.a.dot(&instance.s), &s_pred, q)
         };
+
+        let tf = solver::is_key_correct(&instance.a, &instance.b, &instance.s, q, alpha, 0.01, true);
+        println!("verify: {}",tf);
+
         score += if pass { cur_score } else { 0 };
         total += duration.as_secs_f64() as usize;
 
@@ -55,9 +60,31 @@ fn main() {
 }
 
 fn validate_solution(s_true: &Array1<u64>, s_pred: &Array1<u64>, q: u64) -> bool {
+    // 对 q 取模后的字符串表示
+    let s_true_mod = s_true.mapv(|x| x % q);
+    let s_pred_mod = s_pred.mapv(|x| x % q);
+
+    // 工整输出
+    //println!("{:<12} : {:?}", "s_true % q", s_true_mod);
+    //println!("{:<12} : {:?}", "s_pred % q", s_pred_mod);
+    //println!("{:<12} : {}", "q", q);
+
     if s_true.len() != s_pred.len() {
         panic!("s_true and s_pred must have the same length");
     }
+
+    // --- 新增：计算并打印环形最大差距 ---
+    let max_gap = s_true_mod
+        .iter()
+        .zip(s_pred_mod.iter())
+        .map(|(&a, &b)| {
+            let diff = (a).abs_diff(b);
+            diff.min(q - diff)
+        })
+        .max()
+        .unwrap_or(0);
+
+    println!("{:<12} : {}", "max_gap (modular)", max_gap);
 
     s_true
         .iter()

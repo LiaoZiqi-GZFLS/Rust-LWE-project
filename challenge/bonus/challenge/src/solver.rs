@@ -1,8 +1,10 @@
+// 修改 solver.rs 文件
+
 use std::ops::{Add, Sub, Mul, Div, Neg};
 use crate::lll::{self, VecLinearAlgebra};
-use ndarray::{Array1, Array2, Axis, concatenate, s};
+use ndarray::{Array1, Array2, Axis, concatenate};
 
-/// Solves the LWE problem.
+/// Solves the LWE problem using BKZ + Sieving.
 ///
 /// # Arguments
 ///
@@ -27,30 +29,26 @@ pub(crate) fn solve_lwe(
     let pIm = Array2::from_shape_fn((m, m), |(i, j)| q as f64 * (i == j) as u64 as f64);
     let A = A.mapv(|x| x as f64);
     let M = concatenate(Axis(1), &[pIm.view(), A.view()]).unwrap();
-    let b = b.mapv(|x| x as f64);
-    let br = babai_nearest_vector(&M, &b);
+    let lattice = lll::Lattice::from_array2(&M);
 
-    // this solution requires solving a tall matrix under modulo q
-    // the solutions are not unique, so we take the one that is closest to the original
-    // vector b, which is the result of the LWE problem
-    br.into_iter()
-        .map(|x| (x.round() as u64).rem_euclid(q))
-        .collect::<Array1<u64>>()
+    // 使用 BKZ 算法进行格基约化
+    let block_size = 20; // 可以根据需要调整块大小
+    let reduced_lattice = lll::bkz(&lattice, block_size).unwrap();
+
+    // 使用 Sieving 算法搜索最短向量
+    let num_iterations = 1000; // 可以根据需要调整迭代次数
+    let shortest_vector = lll::sieving(&reduced_lattice, num_iterations);
+
+    // 从最短向量中提取秘密向量
+    let s_pred = shortest_vector[m..].iter().map(|x| (x.round() as u64).rem_euclid(q)).collect::<Array1<u64>>();
+
+    s_pred
 }
 
 fn babai_nearest_vector(B: &Array2<f64>, t: &Array1<f64>) -> Array1<f64> {
-    let B0 = lll::Lattice::from_array2(B);
-    let G = lll::gram_schmidt(&B0.basis);
-    let B = lll::int_lll(&B0).unwrap();
-    // 枚举校准，搜索半径设为最短向量长度的1.5倍
-    let calibrated_result = lll::enumerate_and_calibrate(
-        &B0, 
-        &B, 
-        B.get_min_norm_from_basis() * 10.0
-    );
-
-
-    //let B = lll::lll(&B).unwrap();
+    let B = lll::Lattice::from_array2(B);
+    let G = lll::gram_schmidt(&B.basis);
+    let B = lll::int_lll(&B).unwrap();
     let mut b = t.to_vec();
 
     // Iterating in reverse from len-1 down to 0
@@ -65,4 +63,3 @@ fn babai_nearest_vector(B: &Array2<f64>, t: &Array1<f64>) -> Array1<f64> {
 
     Array1::from_vec(b)
 }
-
