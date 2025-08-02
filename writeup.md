@@ -104,7 +104,7 @@ LWE 提供了 8 个测试编号，从 -1 到 6：
 
 ```mermaid
 graph TD
-    Start(["s_pred"]) --> Gen["生成候选 s"]
+    Start["s_pred"] --> Gen["生成候选 s"]
     Gen --> Diff["计算 A·s - b"]
     Diff --> Check{"误差 ≤ 1?"}
     Check -->|"是"| Done["恢复成功"]
